@@ -1,5 +1,6 @@
-import {Modal, Table} from "react-bootstrap";
+import {Figure, Modal, Table} from "react-bootstrap";
 import {ReportType} from "../../types/reports.ts";
+import {baseUrl} from "../../axios/axiosInstance.ts";
 
 type ViewReportProps = {
     show: boolean,
@@ -52,7 +53,24 @@ export const ViewReport = ({show, setShow, report}: ViewReportProps) => {
                             </tr>
                             <tr>
                                 <td>Photos</td>
-                                <td>1, 2</td>
+                                <td>
+                                    <Figure className={"me-2"}>
+                                        <Figure.Image
+                                            width={320}
+                                            height={400}
+                                            alt={"Front photo"}
+                                            src={`${baseUrl}/uploads/${report.user_id}/${encodeURIComponent(report.date)}/${report.photo_front}`}
+                                        />
+                                    </Figure>
+                                    <Figure>
+                                        <Figure.Image
+                                            width={320}
+                                            height={400}
+                                            alt={"Back photo"}
+                                            src={`${baseUrl}/uploads/${report.user_id}/${encodeURIComponent(report.date)}/${report.photo_back}`}
+                                        />
+                                    </Figure>
+                                </td>
                             </tr>
                             </tbody>
                         </Table>
