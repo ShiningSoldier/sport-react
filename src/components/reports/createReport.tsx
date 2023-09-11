@@ -5,6 +5,7 @@ import axiosInstance from "../../axios/axiosInstance.ts";
 import {setReportsDate} from "../../slices/reportsDateSlice.ts";
 import {useAppDispatch} from "../../hooks.ts";
 import {setMessage} from "../../slices/messageSlice.ts";
+import {useError} from "../../hooks/useError.ts";
 
 type CreateReportProps = {
     show: boolean,
@@ -12,6 +13,7 @@ type CreateReportProps = {
 }
 
 export const CreateReport = ({show, setShow}: CreateReportProps) => {
+    const {handleRequestError} = useError()
     const dispatch = useAppDispatch();
     const currentDate = `${getCurrentYear()}-${getCurrentMonth()}-${getCurrentDay()}`;
     const handleClose = () => setShow(false);
@@ -31,11 +33,8 @@ export const CreateReport = ({show, setShow}: CreateReportProps) => {
                     variant: 'success',
                 }));
                 handleClose();
-            }).catch(() => {
-                dispatch(setMessage({
-                    message: 'Could not create report',
-                    variant: 'danger',
-                }));
+            }).catch((error) => {
+                handleRequestError(error)
             });
         }
     }

@@ -5,12 +5,14 @@ import {useAppDispatch} from "../../hooks.ts";
 import {setMessage} from "../../slices/messageSlice.ts";
 import {ViewReport} from "./viewReport.tsx";
 import {useState} from "react";
+import {useError} from "../../hooks/useError.ts";
 
 type ReportsListType = {
     reports: ReportType[]
 }
 
 export const ReportsList = ({reports}: ReportsListType) => {
+    const {handleRequestError} = useError()
     const dispatch = useAppDispatch();
     const [showViewReport, setShowViewReport] = useState<boolean>(false);
     const [activeReport, setActiveReport] = useState<ReportType|null>(null);
@@ -31,8 +33,8 @@ export const ReportsList = ({reports}: ReportsListType) => {
                     message: `Report for ${reportDate} has been deleted successfully`,
                     variant: 'success',
                 }));
-            }).catch((err) => {
-                console.log(err);
+            }).catch((error) => {
+                handleRequestError(error)
             })
         }
     }

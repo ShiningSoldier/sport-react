@@ -7,8 +7,10 @@ import {ReportType} from "../types/reports.ts";
 import {ReportsList} from "../components/reports/reportsList.tsx";
 import {CreateReport} from "../components/reports/createReport.tsx";
 import {useAppSelector} from "../hooks.ts";
+import {useError} from "../hooks/useError.ts";
 
 const Reports = () => {
+    const {handleRequestError} = useError()
     const navigate = useNavigate();
     const year = useAppSelector((state) => state.reportsDateHandler.year);
     const month = useAppSelector((state) => state.reportsDateHandler.month);
@@ -20,8 +22,7 @@ const Reports = () => {
         axiosInstance.get(`/report/${reportDateString}`).then((res) => {
             setReports(res.data)
         }).catch((err) => {
-            console.log(err);
-            navigate('/login');
+            handleRequestError(err)
         })
     }, [navigate, year, month, message])
     return (

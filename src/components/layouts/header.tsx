@@ -18,6 +18,9 @@ const Header = () => {
                         <LinkContainer to={"/reports"}>
                             <Nav.Link href={"/reports"}>Reports</Nav.Link>
                         </LinkContainer>
+                        <LinkContainer to={"/exercises"}>
+                            <Nav.Link href={"/exercises"}>Exercises</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                     <Nav className={"ms-auto"}>
                         <LinkContainer to={"/logout"}>

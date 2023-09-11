@@ -1,14 +1,16 @@
 import {useLoaderData} from "react-router-dom";
 import {Goal, ActivityLevel, UserType, GoalKeys, ActivityLevelKeys} from "../types/user.ts";
 import {Button, Form, FormGroup} from "react-bootstrap";
-import {useState} from "react";
+import React, {useState} from "react";
 import {userGoalDescriptionMapper, userActivityLevelDescriptionMapper} from "../helpers/userDataHelper.ts";
 import axiosInstance from "../axios/axiosInstance.ts";
 import {useAppDispatch} from "../hooks.ts";
 import {MessageTypes} from "../types/common.ts";
 import {setMessage} from "../slices/messageSlice.ts";
+import {useError} from "../hooks/useError.ts";
 
 const Profile = () => {
+    const {handleRequestError} = useError()
     const dispatch = useAppDispatch();
     const {data} = useLoaderData() as {data: UserType}
 
@@ -41,9 +43,8 @@ const Profile = () => {
             const formData = new FormData(e.currentTarget);
             await axiosInstance.post('/user/update', Object.fromEntries(formData.entries()));
             dispatch(setMessage({message: 'User data updated successfully', type: MessageTypes.SUCCESS}))
-        } catch (e: any) {
-            console.log(e)
-            dispatch(setMessage({message: e.message, type: MessageTypes.DANGER}))
+        } catch (error) {
+            handleRequestError(error)
         }
     }
 

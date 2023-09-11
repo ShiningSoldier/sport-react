@@ -1,4 +1,3 @@
-import {redirect} from "react-router-dom";
 import {Row} from "react-bootstrap";
 import {StatisticPeriodPicker} from "../components/statistics/statisticPeriodPicker.tsx";
 import {StatisticsChartsList} from "../components/statistics/statisticsChartsList.tsx";
@@ -6,20 +5,19 @@ import {ReportType} from "../types/reports.ts";
 import {StatisticsPeriod} from "../types/statistics.ts";
 import axiosInstance from "../axios/axiosInstance.ts";
 import {useEffect, useState} from "react";
+import {useError} from "../hooks/useError.ts";
 
 export const Statistics = () => {
+    const {handleRequestError} = useError()
     const [period, setPeriod] = useState<StatisticsPeriod>("week")
     const [statisticsData, setStatisticsData] = useState<ReportType[]>([])
     useEffect(() => {
-        console.log(period)
         axiosInstance.get(`/statistics/${period}`)
             .then(response => {
                 setStatisticsData(response.data)
             })
             .catch(error => {
-                if (error.response.status === 401) {
-                    redirect("/login")
-                }
+                handleRequestError(error)
             })
     }, [period])
 
